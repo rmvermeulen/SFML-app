@@ -1,8 +1,10 @@
 # stuff visual studio does
 .vs
 *.tlog
+*.log
 *.ilk
 *.pdb
+*.idb
 *.iobj
 *.ipdb
 *.pdb
