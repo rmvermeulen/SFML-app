@@ -1,4 +1,12 @@
+# stuff visual studio does
 .vs
+*.tlog
+*.ilk
+*.pdb
+*.iobj
+*.ipdb
+*.pdb
+
 # Prerequisites
 *.d
 
