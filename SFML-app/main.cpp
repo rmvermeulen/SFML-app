@@ -1,22 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <sstream>
 #include <chrono>
 #include <ratio>
 
-int update(double delta) {
-	// std::cout << delta << '\n';
-	return 0;
-}
+#include "./Game.h"
 
-void draw() {
+const unsigned target_fps = 60;
+const double target_frame_duration = 1.0 / target_fps;
 
-}
 
 int main()
 {
 	sf::Font font;
 	if (!font.loadFromFile("./fonts/calibri.ttf")) {
-		throw new std::exception("Font did not load I say");
+		throw new std::exception("Cannot find font");
 	}
 
 	sf::RenderWindow window(sf::VideoMode(400, 300), "Dusting off the ol' cpp");
@@ -30,8 +28,10 @@ int main()
 	fps_label.setFont(font);
 	fps_label.setPosition(100, 100);
 
+	Game game();
+
 	
-	unsigned frame_count = 0;
+	unsigned total_elapsed_frames = 0;
 	auto lastTime = std::chrono::high_resolution_clock::now();
 
 	while (window.isOpen())
@@ -45,23 +45,30 @@ int main()
 
 		const auto now = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> delta = now - lastTime;
+
+		const double seconds = delta.count();
+		if (seconds < target_frame_duration) {
+			continue;
+		}
+
 		lastTime = now;
-
-		const unsigned fps = static_cast<unsigned int>(1/delta.count());
+		const auto fps = static_cast<unsigned>(std::round(1 / seconds));
 		
-		fps_label.setString(std::to_string(frame_count) + ": " + std::to_string(fps));
+		std::stringstream strFps;
+		strFps << total_elapsed_frames << ": " << fps;
+		fps_label.setString(strFps.str());
 
-		update(delta.count());
+		game.update(seconds);
 
 		window.clear();
-		draw();
+		game.draw();
 
 		window.draw(shape);
 		window.draw(fps_label);
 
 		window.display();
 
-		++frame_count;
+		++total_elapsed_frames;
 	}
 
 	return 0;
