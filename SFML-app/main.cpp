@@ -24,7 +24,7 @@ int main()
 
 
 	Game game;
-
+	game.load();
 	
 	unsigned total_elapsed_frames = 0;
 	FrameCounter frames(target_fps);

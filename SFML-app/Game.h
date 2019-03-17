@@ -9,6 +9,8 @@ enum PostUpdateCondition {
 
 class Game
 {
+
+	std::map<std::string, sf::Texture> m_textures;
 public:
 	Game();
 	~Game();
